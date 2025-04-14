@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -118,12 +119,20 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Phone</p>
-                    <a 
-                      href="tel:+11234567890" 
-                      className="text-lg font-medium hover:text-designer-pink transition-colors"
-                    >
-                      +1 (123) 456-7890
-                    </a>
+                    <div className="space-y-1">
+                      <a 
+                        href="tel:+11234567890" 
+                        className="text-lg font-medium hover:text-designer-pink transition-colors block"
+                      >
+                        +1 (123) 456-7890
+                      </a>
+                      <a 
+                        href="tel:+8801826184346" 
+                        className="text-lg font-medium hover:text-designer-pink transition-colors block"
+                      >
+                        +880 1826184346
+                      </a>
+                    </div>
                   </div>
                 </div>
                 

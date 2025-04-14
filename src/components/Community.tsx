@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Upload, Gallery, Heart, MessageSquare } from "lucide-react";
+import { Upload, GalleryHorizontal, Heart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -202,7 +202,7 @@ const Community: React.FC = () => {
             variant="outline"
             className="px-8 py-4 border-designer-purple text-designer-purple hover:bg-designer-purple/10"
           >
-            <Gallery size={18} className="mr-2" /> View All Community Art
+            <GalleryHorizontal size={18} className="mr-2" /> View All Community Art
           </Button>
         </div>
       </div>
