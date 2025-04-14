@@ -19,6 +19,7 @@ const Navbar: React.FC = () => {
     { name: "Home", href: "#hero" },
     { name: "About", href: "#about" },
     { name: "Portfolio", href: "#portfolio" },
+    { name: "Community", href: "#community" },
     { name: "Contact", href: "#contact" },
   ];
 
@@ -36,7 +37,7 @@ const Navbar: React.FC = () => {
           href="#" 
           className="text-xl md:text-2xl font-bold font-display gradient-text"
         >
-          1rrt1za
+          Rahat Al Kayes
         </a>
         
         {/* Desktop Navigation */}
