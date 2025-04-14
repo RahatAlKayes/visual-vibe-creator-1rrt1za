@@ -6,12 +6,14 @@ interface AnimatedTextProps {
   text: string;
   className?: string;
   gradient?: boolean;
+  delay?: string;
 }
 
 const AnimatedText: React.FC<AnimatedTextProps> = ({ 
   text, 
   className,
-  gradient = false 
+  gradient = false,
+  delay = ""
 }) => {
   return (
     <div className="overflow-hidden">
@@ -19,6 +21,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
         className={cn(
           "opacity-0 animate-fade-in", 
           gradient && "gradient-text",
+          delay,
           className
         )}
       >

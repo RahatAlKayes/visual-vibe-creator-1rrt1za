@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +18,14 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
   delay,
   className,
 }) => {
+  const [imageError, setImageError] = useState(false);
+  const fallbackImageUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640";
+  
+  // Handle image loading errors
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div
       className={cn(
@@ -28,8 +36,16 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
     >
       <div
         className="h-80 bg-cover bg-center"
-        style={{ backgroundImage: `url(${imageUrl})` }}
-      />
+        style={{ backgroundImage: `url(${imageError ? fallbackImageUrl : imageUrl})` }}
+      >
+        {/* Hidden image to detect loading errors */}
+        <img 
+          src={imageUrl} 
+          alt="" 
+          className="hidden" 
+          onError={handleImageError} 
+        />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-t from-designer-dark/80 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
       <div className="absolute bottom-0 left-0 p-6 w-full">
         <p className="text-designer-yellow text-sm font-medium mb-2">
