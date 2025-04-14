@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -105,10 +104,10 @@ const Contact: React.FC = () => {
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
                     <a 
-                      href="mailto:contact@1rrt1za.com" 
+                      href="mailto:rahatalkayes@gmail.com" 
                       className="text-lg font-medium hover:text-designer-teal transition-colors"
                     >
-                      contact@1rrt1za.com
+                      rahatalkayes@gmail.com
                     </a>
                   </div>
                 </div>

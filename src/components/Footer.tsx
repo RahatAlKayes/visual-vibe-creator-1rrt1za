@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Instagram, Twitter, Dribbble, Linkedin } from "lucide-react";
+import { Instagram, Twitter, Dribbble, Linkedin, Mail } from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
@@ -27,11 +27,11 @@ const Footer: React.FC = () => {
               <Instagram size={18} />
             </a>
             <a 
-              href="#" 
+              href="mailto:rahatalkayes@gmail.com" 
               className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-designer-teal/30 transition-colors"
-              aria-label="Twitter"
+              aria-label="Email"
             >
-              <Twitter size={18} />
+              <Mail size={18} />
             </a>
             <a 
               href="#" 
