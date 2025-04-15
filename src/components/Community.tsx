@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { Upload, GalleryHorizontal, Heart, MessageSquare } from "lucide-react";
+import { Upload, GalleryHorizontal, Heart, MessageSquare, Award, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -74,7 +73,6 @@ const ArtworkCard: React.FC<ArtworkProps> = ({
 const Community: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   
-  // Sample community artwork data
   const communityArtworks: ArtworkProps[] = [
     {
       id: 1,
@@ -129,7 +127,6 @@ const Community: React.FC = () => {
   const handleUpload = () => {
     setIsUploading(true);
     
-    // Simulate file upload
     setTimeout(() => {
       setIsUploading(false);
       toast("Feature coming soon", {
@@ -144,12 +141,30 @@ const Community: React.FC = () => {
     <section id="community" className="section-padding bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 font-display">
-            <span className="gradient-text">Community Showcase</span>
-          </h2>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Trophy size={32} className="text-designer-purple" />
+            <h2 className="text-3xl md:text-4xl font-bold font-display">
+              <span className="gradient-text">Design Contest</span>
+            </h2>
+          </div>
           <p className="text-lg text-gray-600">
-            Explore amazing art and designs from talented creators in our community. Share your work and connect with fellow artists.
+            Showcase your creativity, compete with fellow designers, and win recognition in our monthly design challenges.
           </p>
+          
+          <div className="mt-6 flex justify-center gap-4">
+            <div className="text-center">
+              <Award size={24} className="mx-auto mb-2 text-designer-purple" />
+              <p className="text-sm font-medium">Monthly Prizes</p>
+            </div>
+            <div className="text-center">
+              <Heart size={24} className="mx-auto mb-2 text-designer-pink" />
+              <p className="text-sm font-medium">Community Voting</p>
+            </div>
+            <div className="text-center">
+              <Trophy size={24} className="mx-auto mb-2 text-designer-teal" />
+              <p className="text-sm font-medium">Featured Showcase</p>
+            </div>
+          </div>
         </div>
 
         <div className="glass-card p-8 mb-12 opacity-0 animate-fade-in">
