@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Bookmark, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PortfolioItemProps {
@@ -65,6 +65,8 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
 };
 
 const Portfolio: React.FC = () => {
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+  
   // Sample portfolio items
   const portfolioItems = [
     {
@@ -105,10 +107,18 @@ const Portfolio: React.FC = () => {
     },
   ];
 
+  // Get unique categories
+  const categories = ["all", ...new Set(portfolioItems.map(item => item.category.toLowerCase()))];
+  
+  // Filter items based on active filter
+  const filteredItems = activeFilter === "all" 
+    ? portfolioItems 
+    : portfolioItems.filter(item => item.category.toLowerCase() === activeFilter);
+
   return (
     <section id="portfolio" className="section-padding">
       <div className="container mx-auto">
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div className="max-w-3xl mx-auto text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 font-display">
             <span className="gradient-text">Featured Work</span>
           </h2>
@@ -116,9 +126,29 @@ const Portfolio: React.FC = () => {
             Explore a selection of my recent design projects, showcasing my creative approach and aesthetic sensibilities.
           </p>
         </div>
+        
+        {/* Portfolio Filters */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-sm mr-2">
+            <Filter size={14} className="mr-1" /> Filter:
+          </div>
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveFilter(category)}
+              className={`px-4 py-1 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === category
+                  ? "bg-designer-purple text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {category === "all" ? "All Work" : category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {portfolioItems.map((item, index) => (
+          {filteredItems.map((item, index) => (
             <PortfolioItem
               key={index}
               title={item.title}
@@ -127,6 +157,16 @@ const Portfolio: React.FC = () => {
               delay={item.delay}
             />
           ))}
+        </div>
+        
+        <div className="mt-16 text-center">
+          <a 
+            href="#admin" 
+            className="inline-flex items-center px-6 py-3 rounded-full border-2 border-designer-purple text-designer-purple font-medium hover:bg-designer-purple/10 transition-colors"
+          >
+            <Bookmark size={18} className="mr-2" />
+            Manage Portfolio
+          </a>
         </div>
       </div>
     </section>

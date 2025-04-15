@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ArrowDownCircle, Award, CupSoda } from "lucide-react";
+import { ArrowDownCircle, Award, CupSoda, Palette, Zap, Stars } from "lucide-react";
 import AnimatedText from "./AnimatedText";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
@@ -13,6 +13,7 @@ const Hero: React.FC = () => {
       {/* Background Effects */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-designer-purple/20 rounded-full filter blur-3xl opacity-70 animate-float"></div>
       <div className="absolute top-1/3 -right-32 w-96 h-96 bg-designer-teal/20 rounded-full filter blur-3xl opacity-70 animate-float" style={{ animationDelay: "2s" }}></div>
+      <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-designer-pink/20 rounded-full filter blur-3xl opacity-50 animate-float" style={{ animationDelay: "3s" }}></div>
       
       {/* 3D Design Elements */}
       <div className="absolute left-10 top-1/4 animate-float" style={{ animationDelay: "1s" }}>
@@ -20,6 +21,15 @@ const Hero: React.FC = () => {
       </div>
       <div className="absolute right-10 bottom-1/4 animate-float" style={{ animationDelay: "1.5s" }}>
         <Award size={48} className="text-designer-teal opacity-60" />
+      </div>
+      <div className="absolute left-1/4 bottom-1/3 animate-float" style={{ animationDelay: "2.5s" }}>
+        <Palette size={36} className="text-designer-pink opacity-60" />
+      </div>
+      <div className="absolute right-1/4 top-1/3 animate-float" style={{ animationDelay: "3.5s" }}>
+        <Zap size={36} className="text-designer-orange opacity-60" />
+      </div>
+      <div className="absolute left-1/3 top-1/4 animate-float" style={{ animationDelay: "2.7s" }}>
+        <Stars size={28} className="text-designer-yellow opacity-60" />
       </div>
       
       <div className="container px-6 flex flex-col items-center text-center z-10">

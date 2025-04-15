@@ -7,6 +7,7 @@ import Portfolio from "@/components/Portfolio";
 import Community from "@/components/Community";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import PortfolioAdmin from "@/components/PortfolioAdmin";
 
 const Index: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const Index: React.FC = () => {
       <Portfolio />
       <Community />
       <Contact />
+      <PortfolioAdmin />
       <Footer />
     </div>
   );
