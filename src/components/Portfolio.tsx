@@ -1,14 +1,14 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ExternalLink, Bookmark, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface PortfolioItemProps {
+interface PortfolioItem {
+  id: number;
   title: string;
   category: string;
   imageUrl: string;
-  delay: string;
-  className?: string;
+  description?: string;
+  link?: string;
 }
 
 const PortfolioItem: React.FC<PortfolioItemProps> = ({
@@ -21,7 +21,6 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
   const [imageError, setImageError] = useState(false);
   const fallbackImageUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640";
   
-  // Handle image loading errors
   const handleImageError = () => {
     setImageError(true);
   };
@@ -38,7 +37,6 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
         className="h-80 bg-cover bg-center"
         style={{ backgroundImage: `url(${imageError ? fallbackImageUrl : imageUrl})` }}
       >
-        {/* Hidden image to detect loading errors */}
         <img 
           src={imageUrl} 
           alt="" 
@@ -66,54 +64,57 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
 
 const Portfolio: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  
-  // Sample portfolio items
-  const portfolioItems = [
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([
     {
+      id: 1,
       title: "Neon Dreams",
       category: "Brand Identity",
       imageUrl: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640",
-      delay: "delay-100",
+      description: "A vibrant brand identity project for a music festival."
     },
     {
+      id: 2,
       title: "Abstract Waves",
       category: "Digital Art",
       imageUrl: "https://images.unsplash.com/photo-1527576539890-dfa815648363?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640",
-      delay: "delay-200",
+      description: "Abstract digital art piece exploring motion and color."
     },
     {
+      id: 3,
       title: "Vibrant Gradients",
       category: "UI Design",
       imageUrl: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640",
-      delay: "delay-300",
+      description: "UI design system using vibrant gradients for a tech startup."
     },
-    {
-      title: "Tech Minimalism",
-      category: "Web Design",
-      imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640",
-      delay: "delay-100",
-    },
-    {
-      title: "Creative Flow",
-      category: "Motion Graphics",
-      imageUrl: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640",
-      delay: "delay-200",
-    },
-    {
-      title: "Golden Hour",
-      category: "Photography",
-      imageUrl: "https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640",
-      delay: "delay-300",
-    },
-  ];
+  ]);
 
-  // Get unique categories
+  // Get unique categories from actual portfolio items
   const categories = ["all", ...new Set(portfolioItems.map(item => item.category.toLowerCase()))];
   
   // Filter items based on active filter
   const filteredItems = activeFilter === "all" 
     ? portfolioItems 
     : portfolioItems.filter(item => item.category.toLowerCase() === activeFilter);
+
+  // Subscribe to portfolio items changes from admin panel
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'portfolioItems') {
+        const items = e.newValue ? JSON.parse(e.newValue) : [];
+        setPortfolioItems(items);
+      }
+    };
+
+    // Load initial items from localStorage
+    const storedItems = localStorage.getItem('portfolioItems');
+    if (storedItems) {
+      setPortfolioItems(JSON.parse(storedItems));
+    }
+
+    // Listen for changes
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   return (
     <section id="portfolio" className="section-padding">
@@ -150,11 +151,11 @@ const Portfolio: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {filteredItems.map((item, index) => (
             <PortfolioItem
-              key={index}
+              key={item.id}
               title={item.title}
               category={item.category}
               imageUrl={item.imageUrl}
-              delay={item.delay}
+              delay={`delay-${(index % 3 + 1) * 100}`}
             />
           ))}
         </div>

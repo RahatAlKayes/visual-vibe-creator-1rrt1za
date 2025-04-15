@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Plus, Trash2, Edit, Save, X, Image as ImageIcon, ExternalLink, Lock, 
   AlertTriangle, Check, EyeOff, Eye, Upload
@@ -130,7 +130,9 @@ const PortfolioAdmin: React.FC = () => {
 
   const handleDeleteItem = (id: number) => {
     if (confirm("Are you sure you want to delete this item?")) {
-      setPortfolioItems(portfolioItems.filter(item => item.id !== id));
+      const updatedItems = portfolioItems.filter(item => item.id !== id);
+      setPortfolioItems(updatedItems);
+      localStorage.setItem('portfolioItems', JSON.stringify(updatedItems));
       toast("Item deleted", {
         description: "Portfolio item has been removed",
       });
@@ -148,14 +150,18 @@ const PortfolioAdmin: React.FC = () => {
     }
     
     if (isEditing) {
-      setPortfolioItems(portfolioItems.map(item => 
+      const updatedItems = portfolioItems.map(item => 
         item.id === currentItem.id ? currentItem : item
-      ));
+      );
+      setPortfolioItems(updatedItems);
+      localStorage.setItem('portfolioItems', JSON.stringify(updatedItems));
       toast.success("Item updated", {
         description: "Portfolio item has been updated",
       });
     } else {
-      setPortfolioItems([...portfolioItems, currentItem]);
+      const newItems = [...portfolioItems, currentItem];
+      setPortfolioItems(newItems);
+      localStorage.setItem('portfolioItems', JSON.stringify(newItems));
       toast.success("Item added", {
         description: "New portfolio item has been added",
       });
@@ -164,6 +170,15 @@ const PortfolioAdmin: React.FC = () => {
     setShowItemDialog(false);
     setCurrentItem(null);
   };
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      const storedItems = localStorage.getItem('portfolioItems');
+      if (storedItems) {
+        setPortfolioItems(JSON.parse(storedItems));
+      }
+    }
+  }, [isAuthenticated]);
 
   return (
     <section id="admin" className="section-padding bg-gray-50">
