@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import { 
-  Plus, Trash2, Edit, Save, X, Image, ExternalLink, Lock, 
-  AlertTriangle, Check, EyeOff, Eye
+  Plus, Trash2, Edit, Save, X, Image as ImageIcon, ExternalLink, Lock, 
+  AlertTriangle, Check, EyeOff, Eye, Upload
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +13,7 @@ import { toast } from "@/components/ui/sonner";
 import { 
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from "@/components/ui/table";
+import { Label } from "@/components/ui/label";
 
 interface PortfolioItem {
   id: number;
@@ -34,16 +34,42 @@ const PortfolioAdmin: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Admin password - in a real app, this would be handled securely on the backend
-  const ADMIN_PASSWORD = "admin123"; // You should change this!
+  const ADMIN_PASSWORD = "rahat291658";
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please upload an image file");
+      return;
+    }
+
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_SIZE) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (currentItem && e.target?.result) {
+        setCurrentItem({
+          ...currentItem,
+          imageUrl: e.target.result as string
+        });
+      }
+    };
+    reader.readAsDataURL(file);
+
+    toast.success("Image uploaded successfully!");
+  };
 
   const handleLogin = () => {
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       setShowLogin(false);
       
-      // In a real app, you'd fetch items from a database
-      // For demo purposes, we'll use the same data from Portfolio.tsx
       const sampleItems: PortfolioItem[] = [
         {
           id: 1,
@@ -274,7 +300,6 @@ const PortfolioAdmin: React.FC = () => {
         </div>
       </div>
       
-      {/* Login Dialog */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -299,7 +324,7 @@ const PortfolioAdmin: React.FC = () => {
                 </button>
               </div>
               <p className="text-sm text-gray-500">
-                Use "admin123" for demonstration purposes
+                Use "rahat291658" for demonstration purposes
               </p>
             </div>
           </div>
@@ -320,7 +345,6 @@ const PortfolioAdmin: React.FC = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Add/Edit Item Dialog */}
       <Dialog open={showItemDialog} onOpenChange={setShowItemDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -330,8 +354,9 @@ const PortfolioAdmin: React.FC = () => {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Title *</label>
+              <Label htmlFor="title">Title *</Label>
               <Input
+                id="title"
                 placeholder="Enter title"
                 value={currentItem?.title || ""}
                 onChange={(e) => setCurrentItem({ 
@@ -341,8 +366,9 @@ const PortfolioAdmin: React.FC = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Category *</label>
+              <Label htmlFor="category">Category *</Label>
               <Input
+                id="category"
                 placeholder="E.g., UI Design, Brand Identity, etc."
                 value={currentItem?.category || ""}
                 onChange={(e) => setCurrentItem({ 
@@ -352,47 +378,46 @@ const PortfolioAdmin: React.FC = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Image URL *</label>
-              <div className="flex">
+              <Label htmlFor="image">Image Upload *</Label>
+              <div className="flex flex-col gap-4">
                 <Input
-                  placeholder="Enter image URL"
-                  value={currentItem?.imageUrl || ""}
-                  onChange={(e) => setCurrentItem({ 
-                    ...currentItem!, 
-                    imageUrl: e.target.value 
-                  })}
-                  className="flex-1"
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
                 />
                 <Button
                   variant="outline"
-                  size="icon"
-                  className="ml-2"
-                  onClick={() => {
-                    // In a real app, you would open a file picker or image library
-                    toast.info("Image Picker", {
-                      description: "In a production app, this would open an image upload dialog",
-                    });
-                  }}
+                  onClick={() => document.getElementById('image')?.click()}
+                  className="w-full border-dashed border-2"
                 >
-                  <Image size={16} />
+                  <Upload className="mr-2 h-4 w-4" />
+                  Choose Image
                 </Button>
+                {currentItem?.imageUrl && (
+                  <div className="mt-2 relative">
+                    <img
+                      src={currentItem.imageUrl}
+                      alt="Preview"
+                      className="w-full h-40 object-cover rounded-md"
+                    />
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-2 right-2"
+                      onClick={() => setCurrentItem({ ...currentItem, imageUrl: '' })}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
-              {currentItem?.imageUrl && (
-                <div className="mt-2 h-20 w-20 rounded-md overflow-hidden">
-                  <img
-                    src={currentItem.imageUrl}
-                    alt="Preview"
-                    className="h-full w-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=640";
-                    }}
-                  />
-                </div>
-              )}
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description</label>
+              <Label htmlFor="description">Description</Label>
               <Textarea
+                id="description"
                 placeholder="Enter description"
                 value={currentItem?.description || ""}
                 onChange={(e) => setCurrentItem({ 
@@ -402,9 +427,10 @@ const PortfolioAdmin: React.FC = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">External Link (optional)</label>
+              <Label htmlFor="link">External Link (optional)</Label>
               <div className="flex">
                 <Input
+                  id="link"
                   placeholder="E.g., https://example.com"
                   value={currentItem?.link || ""}
                   onChange={(e) => setCurrentItem({ 
