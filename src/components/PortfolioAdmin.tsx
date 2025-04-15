@@ -99,9 +99,7 @@ const PortfolioAdmin: React.FC = () => {
         description: "You now have access to manage your portfolio",
       });
     } else {
-      toast.error("Invalid password", {
-        description: "Please check your password and try again",
-      });
+      toast.error("Invalid password");
     }
   };
 
@@ -323,9 +321,6 @@ const PortfolioAdmin: React.FC = () => {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              <p className="text-sm text-gray-500">
-                Use "rahat291658" for demonstration purposes
-              </p>
             </div>
           </div>
           <DialogFooter className="sm:justify-between">
